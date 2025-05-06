@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agricultural Disease Expert</title>
+    <link rel="stylesheet" href="/static/styles/navbar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        /* Main content wrapper - pushes content below fixed navbar */
+        .page-wrapper {
+            padding-top: 60px; /* Account for navbar height (60px) + padding */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Chat layout */
+        .chat-layout {
+            display: flex;
+            height: calc(100vh - 60px); /* Viewport height minus navbar */
+            overflow: hidden;
+        }
+        
+        /* Scrollable containers */
+        .chat-container {
+            height: 100%;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #d1d5db #f3f4f6;
+            padding: 1rem;
+        }
+        
+        .chat-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .chat-container::-webkit-scrollbar-track {
+            background: #f3f4f6;
+        }
+        
+        .chat-container::-webkit-scrollbar-thumb {
+            background-color: #d1d5db;
+            border-radius: 20px;
+        }
+        
+        .history-container {
+            height: 100%;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #d1d5db #f3f4f6;
+        }
+        
+        .history-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .history-container::-webkit-scrollbar-track {
+            background: #f3f4f6;
+        }
+        
+        .history-container::-webkit-scrollbar-thumb {
+            background-color: #d1d5db;
+            border-radius: 20px;
+        }
+        
+        /* Chat message styling */
+        .user-message {
+            background-color: #e2f0ff;
+            border-radius: 18px 18px 0 18px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        .bot-message {
+            background-color: #f0f0f0;
+            border-radius: 18px 18px 18px 0;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .typing-indicator::after {
+            content: '...';
+            animation: typing 1s infinite;
+        }
+        
+        @keyframes typing {
+            0% { content: '.'; }
+            33% { content: '..'; }
+            66% { content: '...'; }
+            100% { content: '.'; }
+        }
+        
+        /* History sidebar styling */
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px;
+            transition: all 0.2s ease;
+        }
+        
+        .history-text {
+            flex-grow: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .history-item:hover {
+            background-color: #f3f4f6;
+        }
+        
+        .history-item.active {
+            background-color: #e2f0ff;
+            border-left: 4px solid #3b82f6;
+        }
+        
+        .delete-btn {
+            opacity: 0.6;
+            transition: opacity 0.2s;
+            color: #ef4444;
+        }
+        
+        .delete-btn:hover {
+            opacity: 1;
+        }
+        
+        /* Chat input area */
+        .chat-input-area {
+            background-color: white;
+            border-top: 1px solid #e5e7eb;
+            padding: 1rem;
+            position: sticky;
+            bottom: 0;
+        }
+        
+        .input-container {
+            display: flex;
+            background-color: #f5f5f5;
+            border: 2px solid #e5e7eb;
+            border-radius: 9999px;
+            overflow: hidden;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .input-container:focus-within {
+            border-color: #27ae60;
+            box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.2);
+        }
+        
+        .chat-input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 0.75rem 1.25rem;
+            font-size: 0.95rem;
+            outline: none;
+        }
+        
+        .send-button {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            width: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .send-button:hover {
+            background-color: #229954;
+        }
+        
+        /* Chat main area header */
+        .chat-header {
+            background-color: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 1.25rem;
+        }
+        
+        /* New chat button */
+        .new-chat-btn {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .new-chat-btn:hover {
+            background-color: #229954;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        /* Responsive adjustments */
+        @media screen and (max-width: 768px) {
+            .page-wrapper {
+                padding-top: 80px;
+            }
+            
+            .chat-layout {
+                flex-direction: column;
+                height: calc(100vh - 80px);
+            }
+            
+            .sidebar {
+                width: 100% !important;
+                max-height: 200px;
+                border-right: none !important;
+                border-bottom: 1px solid #e5e7eb;
+            }
+            
+            .history-container {
+                max-height: 120px;
+            }
+            
+            .main-chat {
+                height: calc(100vh - 280px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with navigation (from your navbar.css) -->
+    <header class="header-bar" id="header-bar">
+        <a class="farmify-logo" href="/mainsec"></a>
+        
+        <!-- Mobile menu toggle button -->
+        <button class="farmify-menu-toggle" id="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        
+        <nav class="farmify-nav" id="farmify-nav">
+            <ul>
+                <li><a href="http://127.0.0.1:5003/mainsec"><i class="fas fa-home"></i> HOME</a></li>
+                <li><a href="http://127.0.0.1:5003/team" class="nav-link"><i class="fas fa-users"></i> OUR TEAM</a></li>
+                <li><a href="http://127.0.0.1:5003/contact" class="nav-link"><i class="fas fa-envelope"></i> CONTACT</a></li>
+                <li><a href="#" class="nav-link active"><i class="fas fa-robot"></i> CHATBOT</a></li>
+                <li class="dropdown">
+                    <button class="dropbtn" id="user-email">Welcome User</button>
+                    <div class="dropdown-content">
+                        <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </li>                
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main content wrapper - starts below the fixed navbar -->
+    <div class="page-wrapper">
+        <div class="chat-layout">
+            <!-- Chat History Sidebar -->
+            <div id="historySidebar" class="sidebar w-1/4 bg-white border-r border-gray-200 flex flex-col">
+                <div class="p-4 border-b border-gray-200">
+                    <button id="newChatBtn" class="new-chat-btn">
+                        <i class="fas fa-plus mr-2"></i> New Chat
+                    </button>
+                </div>
+                <div class="text-sm text-gray-700 font-semibold px-4 py-3 border-b border-gray-200 bg-gray-50">
+                    <i class="fas fa-history mr-2"></i> Chat History
+                </div>
+                <div id="historyContainer" class="history-container flex-grow">
+                    <!-- History items will be added here -->
+                </div>
+            </div>
+
+            <!-- Main Chat Area -->
+            <div class="main-chat flex-1 flex flex-col bg-white">
+                <header class="chat-header">
+                    <h1 class="text-2xl font-bold text-green-700 flex items-center"> Agricultural Disease Expert</h1>
+                    <p class="text-gray-600 mt-1">Ask me questions about crop diseases, pests, and management techniques.</p>
+                </header>
+
+                <div id="chatContainer" class="chat-container flex-grow space-y-4">
+                    <div class="bot-message p-4 ml-2 max-w-3xl">
+                        <p>Hello! I'm your Agricultural Disease Expert. How can I help you today? Ask me about plant diseases, pest management, or prevention techniques.</p>
+                    </div>
+                    <!-- Chat messages will appear here -->
+                </div>
+
+                <div class="chat-input-area">
+                    <div class="input-container">
+                        <input 
+                            type="text" 
+                            id="questionInput" 
+                            class="chat-input" 
+                            placeholder="Ask a question about agricultural diseases..."
+                        >
+                        <button id="askButton" class="send-button">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/static/scripts/navbar.js"></script>
+    <script type="module" src="/static/scripts/chatbot.js"></script>
+</body>
+</html>
