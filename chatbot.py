@@ -30,11 +30,6 @@ load_dotenv()
 # Define the path for persistent vector database
 PERSIST_DIRECTORY = "./chroma_db"
 
-@app.route('/')
-def home():
-    email = request.args.get('email')
-    return render_template('chatbot.html', email=email)
-
 def create_vectorstore():
     """Creates and returns a new vector store from the source documents"""
     print("Creating new vector store from source documents...")
@@ -182,10 +177,11 @@ conversational_rag_chain = RunnableWithMessageHistory(
 
 @app.route('/')
 def home():
+    email = request.args.get('email')
     # Generate a new session ID if one doesn't exist
     if 'session_id' not in session:
         session['session_id'] = str(uuid.uuid4())
-    return render_template('chatbot.html', session_id=session['session_id'])
+    return render_template('chatbot.html', email=email, session_id=session['session_id'])
 
 @app.route('/ask', methods=['POST'])
 def ask():
