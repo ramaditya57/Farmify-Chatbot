@@ -30,6 +30,11 @@ load_dotenv()
 # Define the path for persistent vector database
 PERSIST_DIRECTORY = "./chroma_db"
 
+@app.route('/')
+def home():
+    email = request.args.get('email')
+    return render_template('chatbot.html', email=email)
+
 def create_vectorstore():
     """Creates and returns a new vector store from the source documents"""
     print("Creating new vector store from source documents...")
