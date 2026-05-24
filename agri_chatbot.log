@@ -1,0 +1,12 @@
+2025-04-09 00:10:27,951 - agri_chatbot - ERROR - Error setting up primary LLM: ANTHROPIC_API_KEY not found
+2025-04-09 00:10:27,951 - agri_chatbot - INFO - Falling back to secondary model
+2025-04-09 00:10:28,049 - agri_chatbot - INFO - Creating new vectorstore for all
+2025-04-09 00:10:28,387 - agri_chatbot - INFO - Loaded 1 documents from http://eos.com/blog/crop-diseases/
+2025-04-09 00:10:30,286 - agri_chatbot - INFO - Loaded 1 documents from https://extension.umn.edu/plant-diseases/specific-plant-diseases
+2025-04-09 00:10:30,549 - agri_chatbot - INFO - Loaded 1 documents from https://ipm.ucanr.edu/PMG/diseases/diseaseslist.html
+2025-04-09 00:10:31,628 - agri_chatbot - INFO - Loaded 1 documents from https://www.apsnet.org/edcenter/disandpath/Pages/default.aspx
+2025-04-09 00:10:33,714 - agri_chatbot - ERROR - Failed to download PDF https://extension.umd.edu/sites/extension.umd.edu/files/2021-03/HG69-IPMCropDiseasesVegetableGarden.pdf: HTTP 404
+2025-04-09 00:10:36,759 - agri_chatbot - WARNING - Error extracting PDF metadata: No module named 'PyPDF2'
+2025-04-09 00:10:36,924 - agri_chatbot - INFO - Loaded 9 pages from PDF https://www.uky.edu/Ag/Entomology/PSEP/pdfs/11pests1disease.pdf
+2025-04-09 00:10:36,924 - agri_chatbot - INFO - Total documents loaded: 13
+2025-04-09 00:10:39,498 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: BAAI/bge-large-en-v1.5

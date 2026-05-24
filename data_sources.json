@@ -1,0 +1,40 @@
+{
+  "web": [
+    {
+      "url": "https://ipm.ucanr.edu/PMG/diseases/diseaseslist.html",
+      "name": "UC IPM Disease List",
+      "priority": 1
+    },
+    {
+      "url": "http://eos.com/blog/crop-diseases/",
+      "name": "EOS Crop Diseases",
+      "priority": 2
+    },
+    {
+      "url": "https://extension.umn.edu/plant-diseases/specific-plant-diseases",
+      "name": "UMN Extension Plant Diseases",
+      "priority": 1
+    },
+    {
+      "url": "https://www.apsnet.org/edcenter/disandpath/Pages/default.aspx",
+      "name": "APS Education Center",
+      "priority": 1
+    }
+  ],
+  "pdf": [
+    {
+      "url": "https://www.uky.edu/Ag/Entomology/PSEP/pdfs/11pests1disease.pdf",
+      "name": "UK Ag Entomology Guide",
+      "priority": 2
+    },
+    {
+      "url": "https://extension.umd.edu/sites/extension.umd.edu/files/2021-03/HG69-IPMCropDiseasesVegetableGarden.pdf",
+      "name": "UMD Extension IPM Guide",
+      "priority": 1
+    }
+  ],
+  "local_files": {
+    "pdf_directory": "local_data/pdfs/",
+    "csv_directory": "local_data/csv/"
+  }
+}
